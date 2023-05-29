@@ -535,170 +535,171 @@ const optionData = [
 function debug(msg) {
   console.log("Debug message: ", msg);
 }
-const htmlSnippet = `  <div class="_rp_wrapper">
-<div class="_rp_row  _rp_language_picker_row">
-  <label for="">Generate reply in:</label>
-  <select
-    name="_rp_lang_picker "
-    class="_rp_button  _rp_lang_picker"
-    id="_rp_lang_picker"
-  >
-    <option value="hindi">Hindi</option>
-    <option value="english" selected>English</option>
-  </select>
+const htmlSnippet = `
+<div class="_rp_wrapper">
+<div class="_rp_row  _rp_language_picker_row  hidden-temp">
+ <label for="">Generate reply in:</label>
+ <select
+   name="_rp_lang_picker "
+   class="_rp_button  _rp_lang_picker"
+   id="_rp_lang_picker"
+ >
+   <option value="hindi">Hindi</option>
+   <option value="english" selected>English</option>
+ </select>
 </div>
 <div class="_rp_row">
-  <div class="_rp_tone_buttons_wrapper">
-    <button
-      class="_rp_button _rp_tone_button"
-      data-tone="agreeable"
-    >
-      Agree
-    </button>
-    <button
-      class="_rp_button _rp_tone_button"
-      data-tone="disagreeable"
-    >
-      Disagree
-    </button>
-    <button
-      class="_rp_button _rp_tone_button "
-      data-tone="angry"
-    >
-      Neutral
-    </button>
-    <button
-      class="_rp_button _rp_tone_button"
-      data-tone="sarcastic"
-    >
-      Friendly
-    </button>
-    <button
-      class="_rp_button _rp_tone_button"
-      data-tone="insightful"
-    >
-      Serious
-    </button>
-    <button
-      class="_rp_button _rp_tone_button hidden other"
-      data-tone="cautious"
-    >
-      Cautious
-    </button>
-    <button
-      class="_rp_button _rp_tone_button hidden other"
-      data-tone="encouraging"
-    >
-      Encouraging
-    </button>
-    <button
-      class="_rp_button _rp_tone_button hidden other"
-      data-tone="fascinated"
-    >
-      Fascinated
-    </button>
-    <button
-      class="_rp_button _rp_tone_button hidden other"
-      data-tone="sympathetic"
-    >
-      Sympathetic
-    </button>
-    <button
-      class="_rp_button _rp_tone_button hidden other"
-      data-tone="humble"
-    >
-      Humble
-    </button>
-    <button
-      class="_rp_button _rp_tone_button hidden other"
-      data-tone="inquisitive"
-    >
-      Inquisitive
-    </button>
-    <button
-      class="_rp_button _rp_tone_button hidden other"
-      data-tone="lilting"
-    >
-      Lilting
-    </button>
-    <button
-      class="_rp_button _rp_tone_button hidden other"
-      data-tone="pleading"
-    >
-      Pleading
-    </button>
-    <button
-      class="_rp_button _rp_tone_button hidden other"
-      data-tone="supportive"
-    >
-      Supportive
-    </button>
-    <button
-      class="_rp_button _rp_tone_button hidden other"
-      data-tone="understanding"
-    >
-      Understanding
-    </button>
-   
-  </div>
-</div>
-<div class="_rp_row">
-  <button class="_rp_button _rp_show_more_button other">
-    Show More Tones
-  </button>
-</div>
-<div class="_rp_row">
-  <div class="_rp_prompt_input_wrapper">
-    <label for="_rp_prompt_input">Custom Prompt</label>
-    <textarea
-      name="_rp_prompt_input"
-      id="_rp_prompt_input"
-      placeholder="Type your thoughts"
-    ></textarea>
-  </div>
-</div>
-<div class="_rp_row _rp_flex_row">
-  <button
-    id="_rp_submit_button"
-    class="_rp_button _rp_submit_button"
-  >
-    Get Reply
-  </button>
-  <button
-    id="_rp_save_button"
-    class="_rp_button _rp_save_button"
-  >
-    Save Comment
-  </button>
-  <button
-    id="_rp_view_saved_button"
-    class="_rp_button _rp_view_saved_button"
-  >
-    View Saved
-  </button>
-  <div class="_rp_flex_row">
-    <div class="_rp_range_container">
-      <div><label class="_rp_limit_label">Max char:250</label></div>
-      <input
-        type="range"
-        name=""
-        id=""
-        min="10"
-        max="500"
-        initial="10"
-        value="250"
-      />
-    </div>
-  </div>
+ <div class="_rp_tone_buttons_wrapper">
+   <button
+     class="_rp_button _rp_tone_button"
+     data-tone="agreeable"
+   >
+     Agree
+   </button>
+   <button
+     class="_rp_button _rp_tone_button"
+     data-tone="disagreeable"
+   >
+     Disagree
+   </button>
+   <button
+     class="_rp_button _rp_tone_button "
+     data-tone="angry"
+   >
+     Neutral
+   </button>
+   <button
+     class="_rp_button _rp_tone_button"
+     data-tone="sarcastic"
+   >
+     Friendly
+   </button>
+   <button
+     class="_rp_button _rp_tone_button"
+     data-tone="insightful"
+   >
+     Serious
+   </button>
+   <button
+     class="_rp_button _rp_tone_button hidden other"
+     data-tone="cautious"
+   >
+     Cautious
+   </button>
+   <button
+     class="_rp_button _rp_tone_button hidden other"
+     data-tone="encouraging"
+   >
+     Encouraging
+   </button>
+   <button
+     class="_rp_button _rp_tone_button hidden other"
+     data-tone="fascinated"
+   >
+     Fascinated
+   </button>
+   <button
+     class="_rp_button _rp_tone_button hidden other"
+     data-tone="sympathetic"
+   >
+     Sympathetic
+   </button>
+   <button
+     class="_rp_button _rp_tone_button hidden other"
+     data-tone="humble"
+   >
+     Humble
+   </button>
+   <button
+     class="_rp_button _rp_tone_button hidden other"
+     data-tone="inquisitive"
+   >
+     Inquisitive
+   </button>
+   <button
+     class="_rp_button _rp_tone_button hidden other"
+     data-tone="lilting"
+   >
+     Lilting
+   </button>
+   <button
+     class="_rp_button _rp_tone_button hidden other"
+     data-tone="pleading"
+   >
+     Pleading
+   </button>
+   <button
+     class="_rp_button _rp_tone_button hidden other"
+     data-tone="supportive"
+   >
+     Supportive
+   </button>
+   <button
+     class="_rp_button _rp_tone_button hidden other"
+     data-tone="understanding"
+   >
+     Understanding
+   </button>
   
+ </div>
 </div>
-<div class="_rp_row _rp_comments_container hidden">
-  <label for="">Saved Comments</label>
-  <div class="_rp_comment _rp_comment_warning">
-    <h5>No saved comments!</h5>
-   
-  </div>
+<div class="_rp_row">
+ <button class="_rp_button _rp_show_more_button other">
+   Show More Tones
+ </button>
+</div>
+<div class="_rp_row  hidden-temp">
+ <div class="_rp_prompt_input_wrapper">
+   <label for="_rp_prompt_input">Custom Prompt</label>
+   <textarea
+     name="_rp_prompt_input"
+     id="_rp_prompt_input"
+     placeholder="Type your thoughts"
+   ></textarea>
+ </div>
+</div>
+<div class="_rp_row _rp_flex_row   hidden-temp">
+ <button
+   id="_rp_submit_button"
+   class="_rp_button _rp_submit_button"
+ >
+   Get Reply
+ </button>
+ <button
+   id="_rp_save_button"
+   class="_rp_button _rp_save_button "
+ >
+   Save Comment
+ </button>
+ <button
+   id="_rp_view_saved_button"
+   class="_rp_button _rp_view_saved_button "
+ >
+   View Saved
+ </button>
+ <div class="_rp_flex_row">
+   <div class="_rp_range_container">
+     <div><label class="_rp_limit_label">Max char:250</label></div>
+     <input
+       type="range"
+       name=""
+       id=""
+       min="10"
+       max="500"
+       initial="10"
+       value="250"
+     />
+   </div>
+ </div>
  
+</div>
+<div class="_rp_row _rp_comments_container hidden   hidden-temp">
+ <label for="">Saved Comments</label>
+ <div class="_rp_comment _rp_comment_warning">
+   <h5>No saved comments!</h5>
+  
+ </div>
+
 </div>
 </div>`;
 function populateOptionsAndListeners(linkedinEditor) {

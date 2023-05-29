@@ -28,6 +28,9 @@
 ._rp_wrapper .hidden {
   display: none!important;
 }
+._rp_wrapper .hidden-temp {
+  display: none!important;
+}
 ._rp_row {
   width: 100% !important;
   margin-bottom: 8px !important;

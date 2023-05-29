@@ -1,4 +1,4 @@
-const production = false;
+const production = true;
 const serverURL = production
   ? "https://replyay.cyclic.app"
   : "http://localhost:5000";
@@ -118,7 +118,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       body: JSON.stringify({
         text: request.text,
         tone: request.tone,
-        comment: request.comment,
+        comment: request.comment ||"",
         language: request.language || "english",
         characterLimit:request.characterLimit || 250
       }),
