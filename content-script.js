@@ -543,8 +543,9 @@ const htmlSnippet = `  <div class="_rp_wrapper">
     class="_rp_button  _rp_lang_picker"
     id="_rp_lang_picker"
   >
+  <option value="english" selected>English</option>
     <option value="hindi">Hindi</option>
-    <option value="english" selected>English</option>
+    <option value="hinglish">Hinglish</option>
   </select>
 </div>
 <div class="_rp_row">
@@ -726,7 +727,7 @@ function populateOptionsAndListeners(linkedinEditor) {
         .querySelector("#_rp_prompt_input")
         .value.trim();
 
-      if (!customComment ) {
+      if (!customComment) {
         return alert("Please write a comment!");
       }
 
@@ -789,6 +790,7 @@ function populateOptionsAndListeners(linkedinEditor) {
     saveCustomComment(enteredText);
   });
   fetchCustomComment();
+  fetchTones(linkedinEditor);
 }
 function sendServerRequest(data, editorEl) {
   addLoading();
@@ -810,11 +812,13 @@ function saveCustomComment(cmt) {
     },
     function (response) {
       if (response.success) {
-      
         const commentsContainer = document.querySelector(
           "._rp_comments_container"
         );
-   appendComment(commentsContainer,{comment:cmt, index:document.querySelectorAll("._rp_comment").length});
+        appendComment(commentsContainer, {
+          comment: cmt,
+          index: document.querySelectorAll("._rp_comment").length,
+        });
       }
       removeLoading();
     }
@@ -835,7 +839,30 @@ function fetchCustomComment() {
         "._rp_comments_container"
       );
       comments.forEach((cmt, i) => {
-        appendComment(commentsContainer,{comment:cmt, index:i});
+        appendComment(commentsContainer, { comment: cmt, index: i });
+      });
+    }
+  );
+}
+
+function fetchTones(linkedinEditor) {
+  chrome.runtime.sendMessage(
+    {
+      type: "fetchTones",
+    },
+    function (response) {
+      const tones = response.data;
+      if (!tones || tones?.length == 0) {
+        return;
+      }
+      const tonesContainer = document.querySelector(
+        "._rp_tone_buttons_wrapper"
+      );
+      tonesContainer.innerHTML=""
+      tones.forEach((tn, i) => {
+        const data = tn;
+        data.index=i
+        appendTone(tonesContainer, data,linkedinEditor);
       });
     }
   );
@@ -896,7 +923,7 @@ function removeLoading() {
   if (document.querySelector("._rp_wrapper")) {
     document.querySelector("._rp_wrapper").classList.remove("loading");
   }
-  
+
   const commentBox = document.querySelector("#_rp_prompt_input");
   if (commentBox) {
     commentBox.value = "";
@@ -940,13 +967,10 @@ function handleSubmit({ tone, comment }) {
   const languageSelector = document.getElementById("_rp_lang_picker");
   const rangeInput = document.querySelector("._rp_range_container input");
   data.language =
-    (languageSelector && languageSelector.value)
+    languageSelector && languageSelector.value
       ? languageSelector.value
       : "english";
-    data.characterLimit= 
-    (rangeInput && rangeInput.value)
-      ? rangeInput.value
-      : 250;
+  data.characterLimit = rangeInput && rangeInput.value ? rangeInput.value : 250;
   sendServerRequest(data);
 }
 const embedButtons = () => {
@@ -981,7 +1005,7 @@ const embedButtons = () => {
   const container = document.createElement("div");
   container.id = "_rp_container";
   const isDarkMode =
-    document.body.style === "rgb(0,0,0)" && document.body.style === "#FFFFFF";
+    document.body.style.backgroundColor.replaceAll(" ","").includes("rgb(0,0,0)") ;
   if (isDarkMode) {
     container.classList.add("dark_mode");
   }
@@ -1068,20 +1092,47 @@ chrome.runtime.sendMessage({ type: "getCookie" }, function (res) {
   }
 });
 function appendComment(container, data) {
-  if(document.querySelector("._rp_comment_warning")){
-    document.querySelector("._rp_comment_warning").remove()
+  if (document.querySelector("._rp_comment_warning")) {
+    document.querySelector("._rp_comment_warning").remove();
   }
   const newComment = document.createElement("div");
   newComment.classList.add("_rp_comment");
-  newComment.innerHTML = `<div class="_rp_flex_row"><h5>Comment ${data.index+1}</h5> <button >USE</button></div>
+  newComment.innerHTML = `<div class="_rp_flex_row"><h5>Comment ${
+    data.index + 1
+  }</h5> <button >USE</button></div>
 <p>
  ${data.comment}
  
 </p>`;
-newComment.addEventListener("click",()=>{
-  document.querySelector("#_rp_prompt_input").value=data.comment
-})
+  newComment.addEventListener("click", () => {
+    document.querySelector("#_rp_prompt_input").value = data.comment;
+  });
   container.appendChild(newComment);
+}
+function appendTone(container, data, linkedinEditor) {
+  const newTone = document.createElement("button");
+  newTone.classList.add("_rp_button");
+  newTone.classList.add("_rp_tone_button");
+  if (data.index > 4) {
+    newTone.classList.add("hidden");
+    newTone.classList.add("other");
+  }
+  newTone.textContent = data.tone;
+  newTone.dataset.tone = data.tone;
+  newTone.addEventListener("click", () => {
+    // change color
+    newTone.classList.add("_rp_clicked");
+    const selectedTone = newTone.dataset.tone;
+    if (linkedinEditor) {
+      return handleLinkedinSubmit(
+        { tone: selectedTone },
+        linkedinEditor,
+        e.target
+      );
+    }
+    handleSubmit({ tone: selectedTone });
+  });
+  container.appendChild(newTone);
 }
 // function onCommentClick=(e)=>{
 

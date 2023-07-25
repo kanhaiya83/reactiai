@@ -1,4 +1,4 @@
-const production = true;
+const production =true;
 const serverURL = production
   ? "https://extension.server.reacti.ai"
   : "http://localhost:5000";
@@ -78,6 +78,38 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
           return redirectToLoginPage();
         }
         const res = await fetch(serverURL + "/user/comment",{headers: {
+          "Content-Type": "application/json",
+          "fb-session": sessionCookie.value,
+        }},);
+        const response = await res.json();
+        if (response.success) {
+          sendResponse({data:response.data || []});
+        } else if (response.message) {
+          sendResponse({ reply: response.message });
+        } else {
+          sendResponse({ reply: "Some error occurred!" });
+        }
+
+        return true;
+      } catch (e) {
+        console.log(e);
+        sendResponse({ reply: "Some error occurred!" });
+      }
+    })();
+  }
+  if (request.type && request.type === "fetchTones") {
+    (async () => {
+      try {
+        const sessionCookie = await chrome?.cookies?.get({
+          url: clientURL,
+          name: "fb-session",
+        });
+        
+        if (!sessionCookie) {
+          sendResponse({ reply: "" });
+          return redirectToLoginPage();
+        }
+        const res = await fetch(serverURL + "/user/fetchtones",{headers: {
           "Content-Type": "application/json",
           "fb-session": sessionCookie.value,
         }},);
